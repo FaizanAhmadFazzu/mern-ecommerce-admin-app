@@ -1,25 +1,40 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 
 import { Container, Row, Col, Form, Button } from 'react-bootstrap'
 
 import Layout from '../../components/Layout'
 import Input from '../../components/UI/Input'
 
-import { login } from '../../actions'
-import { useDispatch } from 'react-redux'
+import { isUserLoggedIn, login } from '../../actions'
+import { useDispatch, useSelector } from 'react-redux'
+import { Redirect } from 'react-router-dom'
 
 function Signin() {
 
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [error, setError] = useState('');
+    const auth = useSelector(state => state.auth)
+
     const dispatch = useDispatch();
+
+    useEffect(() => {
+        if (!auth.authenticate){
+            dispatch(isUserLoggedIn());
+        }
+    }, [])
 
     const userLogin = (e) => {
         e.preventDefault()
 
         const user = {
-            email: "faizan@example.com",
-            password: "123456"
+           email, password
         }
         dispatch(login(user));
+    }
+
+    if (auth.authenticate) {
+        return <Redirect to={'/'} />
     }
     return (
         <Layout>
@@ -30,17 +45,17 @@ function Signin() {
                             <Input 
                                 label="Email address"
                                 placeholder="Email address"
-                                value=""
+                                value={email}
                                 type="text"
-                                onchange={() => {}}
+                                onChange={(e) => setEmail(e.target.value)}
                             />
 
                             <Input 
                                 label="Password"
                                 placeholder="Password"
-                                value=""
+                                value={password}
                                 type="password"
-                                onchange={() => {}}
+                                onChange={(e) => setPassword(e.target.value)}
                             />
                             <Button variant="primary" type="submit">
                                 Submit

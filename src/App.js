@@ -10,6 +10,8 @@ import Signin from './containers/Signin';
 import Signup from './containers/Signup';
 
 import { isUserLoggedIn} from './actions'
+import Products from './containers/Products';
+import Orders from './containers/Orders';
 
 function App() {
 
@@ -26,6 +28,8 @@ function App() {
     <div className="App">  
       <Switch>
         <PrivateRoute path="/" exact component={Home} />
+        <PrivateRoute path="/products" component={Products} />
+        <PrivateRoute path="/orders" component={Orders} />
         <Route path="/signin" component={Signin} />
         <Route path="/signup" component={Signup} />
       </Switch>

@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
 
-import { Col, Container, Row, Modal, Button } from "react-bootstrap";
+import { Col, Container, Row, Button } from "react-bootstrap";
 import Layout from "../../components/Layout";
 import Input from "../../components/UI/Input";
+import Modal from '../../components/UI/Modal';
 
 import { useSelector, useDispatch } from "react-redux";
 import { addCategory, getAllCategory } from "../../actions";
@@ -17,11 +18,10 @@ const Category = () => {
 
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    dispatch(getAllCategory());
-  }, []);
+  const handleClose = () => setShow(false);
 
-  const handleClose = () => {
+
+  const handleSubmit = () => {
       const form = new FormData();
 
       form.append('name', categoryName);
@@ -29,6 +29,8 @@ const Category = () => {
       form.append('categoryImage', categoryImage);
 
       dispatch(addCategory(form));
+      setCategoryName('');
+      setParentCategoryId('');
     //   const cat = {
     //       categoryName,
     //       parentCategoryId,
@@ -89,11 +91,12 @@ const Category = () => {
         </Row>
       </Container>
 
-      <Modal show={show} onHide={handleClose}>
-        <Modal.Header closeButton>
-          <Modal.Title>Add New Category</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
+      <Modal 
+      show={show} 
+      modalTitle={'Add New Category'}
+      handleClose={handleClose}
+      handleSubmit={handleSubmit}
+      >
           <Input
             value={categoryName}
             placeholder={"Category Name"}
@@ -105,15 +108,6 @@ const Category = () => {
             )}
           </select>
           <input type="file" name="categoryImage" onChange={handleCategoryImage}></input>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>
-            Close
-          </Button>
-          <Button variant="primary" onClick={handleClose}>
-            Save Changes
-          </Button>
-        </Modal.Footer>
       </Modal>
     </Layout>
   );

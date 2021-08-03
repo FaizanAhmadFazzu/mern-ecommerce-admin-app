@@ -28,7 +28,7 @@ const buildNewCategories = (parentId, categories, category) => {
                 name: category.name,
                 slug: category.slug,
                 parentId: category.parentId,
-                children: category.childre
+                children: []
             };
             myCategories.push({
                 ...cat,

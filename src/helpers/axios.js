@@ -20,7 +20,7 @@ axiosIntance.interceptors.request.use((req) => {
     return req;
 })
 
-axiosIntance.interceptors.request.use((res) => {
+axiosIntance.interceptors.response.use((res) => {
     return res;
 }, (error) => {
     console.log(error.response);

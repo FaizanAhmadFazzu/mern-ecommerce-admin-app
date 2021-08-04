@@ -5,7 +5,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { signout } from '../../actions';
 
 
-function Heeader() {
+function Header() {
 
   const auth = useSelector(state => state.auth)
   const dispatch = useDispatch();
@@ -66,4 +66,4 @@ function Heeader() {
   )
 }
 
-export default Heeader
+export default Header

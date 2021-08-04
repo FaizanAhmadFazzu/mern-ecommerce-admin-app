@@ -91,6 +91,7 @@ const Category = () => {
         value: category._id,
         name: category.name,
         parentId: category.parentId,
+        type: category.type
       });
       if (category.children.length > 0) {
         createCategoryList(category.children, options);
@@ -178,13 +179,9 @@ const Category = () => {
     }));
     const idsArray = expandedIdsArray.concat(checkedIdsArray);
     if (checkedIdsArray.length > 0) {
-      dispatch(deleteCategoriesAction(checkedIdsArray)).then((result) => {
-        if (result) {
-          dispatch(getAllCategory());
-          setDeleteCategoriesModal(false);
-        }
-      });
+      dispatch(deleteCategoriesAction(checkedIdsArray));
     }
+    setDeleteCategoriesModal(false);
   };
 
   const categoryList = createCategoryList(category.categories);

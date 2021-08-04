@@ -160,9 +160,7 @@ const Category = () => {
       form.append("parentId", item.parentId ? item.parentId : "");
       form.append("type", item.type);
     });
-    dispatch(updateCategories(form)).then((result) => {
-      dispatch(getAllCategory());
-    });
+    dispatch(updateCategories(form));
     setUpdateCategoryModal(false);
   };
 

@@ -35,10 +35,9 @@ const AddCategoriesModal = (props) => {
         </Col>
         <Col>
           <select
-            className="form-control"
             value={parentCategoryId}
             onChange={(e) => setParentCategoryId(e.target.value)}
-            className="form-control-sm"
+            className="form-control form-control-sm"
           >
             <option>select category</option>
             {categoryList.map((option) => (

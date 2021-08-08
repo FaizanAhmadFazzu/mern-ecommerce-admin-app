@@ -10,19 +10,32 @@ import { createPage } from "../../actions/page.action";
 const NewPage = (props) => {
   const [createModal, setCreateModal] = useState(false);
   const category = useSelector((state) => state.category);
+  const page = useSelector((state) => state.page);
   const [title, setTitle] = useState("");
   const [categories, setCategories] = useState([]);
   const [categoryId, setCategoryId] = useState("");
   const [desc, setDesc] = useState("");
-  const [type, setType] = useState('');
+  const [type, setType] = useState("");
   const [banners, setBanners] = useState([]);
   const [products, setProducts] = useState([]);
 
-  const dispatch = useDispatch(); 
+  const dispatch = useDispatch();
 
   useEffect(() => {
     setCategories(linearCategories(category.categories));
   }, [category]);
+
+  useEffect(() => {
+    if (!page.loading) {
+      setCreateModal(false);
+      setTitle("");
+      setCategoryId("");
+      setDesc("");
+      setType("");
+      setBanners([]);
+      setProducts([]);
+    }
+  }, [page]);
 
   const handleBannerImages = (e) => {
     console.log(e);
@@ -35,36 +48,35 @@ const NewPage = (props) => {
   };
 
   const onCategoryChange = (e) => {
-    const category = categories.find(category => category.value == e.target.value);
-    console.log(category)
+    const category = categories.find(
+      (category) => category.value == e.target.value
+    );
+    console.log(category);
     setCategoryId(category.value);
     setType(category.type);
-  }
+  };
 
   const submitPageForm = () => {
-
     if (title === "") {
-      alert('Title is required');
+      alert("Title is required");
       setCreateModal(false);
       return;
     }
-    const form = new FormData()
-    form.append('title', title);
-    form.append('description', desc);
-    form.append('category', categoryId);
-    form.append('type', type);
-    banners.forEach(banner => {
-      form.append('banners', banner)
-    })
+    const form = new FormData();
+    form.append("title", title);
+    form.append("description", desc);
+    form.append("category", categoryId);
+    form.append("type", type);
+    banners.forEach((banner) => {
+      form.append("banners", banner);
+    });
 
-    products.forEach(product => {
-      form.append('products', product)
-    })
+    products.forEach((product) => {
+      form.append("products", product);
+    });
 
-    dispatch(createPage(form))
-    setCreateModal(false);
-
-  }
+    dispatch(createPage(form));
+  };
 
   const renderCreatePageModal = () => {
     return (
@@ -77,7 +89,7 @@ const NewPage = (props) => {
         <Container>
           <Row>
             <Col>
-              <select
+              {/* <select
                 className="form-control form-control-sm"
                 value={categoryId}
                 onChange={onCategoryChange}
@@ -88,7 +100,15 @@ const NewPage = (props) => {
                     {cat.name}
                   </option>
                 ))}
-              </select>
+              </select> */}
+
+              <Input 
+                type={'select'}
+                value={categoryId}
+                onChange={onCategoryChange}
+                options={categories}
+                placeholder={'select category'}
+              />
             </Col>
           </Row>
           <Row>
@@ -114,12 +134,12 @@ const NewPage = (props) => {
           </Row>
 
           {banners.length > 0
-              ? banners.map((banner, index) => (
-                  <Row key={index}>
-                    <Col>{banner.name}</Col>
-                  </Row>
-                ))
-              : null}
+            ? banners.map((banner, index) => (
+                <Row key={index}>
+                  <Col>{banner.name}</Col>
+                </Row>
+              ))
+            : null}
 
           <Row>
             <Col>
@@ -133,12 +153,12 @@ const NewPage = (props) => {
           </Row>
 
           {banners.length > 0
-              ? products.map((product, index) => (
-                  <Row key={index}>
-                    <Col>{product.name}</Col>
-                  </Row>
-                ))
-              : null}
+            ? products.map((product, index) => (
+                <Row key={index}>
+                  <Col>{product.name}</Col>
+                </Row>
+              ))
+            : null}
 
           <Row>
             <Col>
@@ -156,8 +176,14 @@ const NewPage = (props) => {
   };
   return (
     <Layout sidebar>
-      {renderCreatePageModal()}
-      <button onClick={() => setCreateModal(true)}>Create Page</button>
+      {page.loading ? (
+        <p>Creating Page ...please wait</p>
+      ) : (
+        <>
+          {renderCreatePageModal()}
+          <button onClick={() => setCreateModal(true)}>Create Page</button>
+        </>
+      )}
     </Layout>
   );
 };

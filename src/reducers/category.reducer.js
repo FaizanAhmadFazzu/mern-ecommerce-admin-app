@@ -72,7 +72,8 @@ export default (state = initState, action) => {
             break;
         case categoryConstants.ADD_NEW_CATEGORY_FAILURE:
             state = {
-                ...initState
+                ...initState,
+                error: action.payload.error
             }
             break;
 

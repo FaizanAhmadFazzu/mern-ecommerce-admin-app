@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 import { Col, Container, Row } from "react-bootstrap";
 import CheckboxTree from "react-checkbox-tree";
@@ -47,9 +47,16 @@ const Category = () => {
 
   const handleCloseUpdateCategoryModal = () => setUpdateCategoryModal(false);
 
+  useEffect(() => {
+     if (category.loading) {
+      setShow(false);
+     } 
+  }, [category.loading])
+
   const handleSubmit = () => {
     if (categoryName === "") {
       alert("Name is required");
+      setShow(false);
       return;
     }
     const form = new FormData();
@@ -67,7 +74,6 @@ const Category = () => {
     //       categoryImage
     //   };
     //   console.log(cat)
-    setShow(false);
   };
   const handleShow = () => setShow(true);
 

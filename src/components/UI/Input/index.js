@@ -5,22 +5,30 @@ import { Form } from "react-bootstrap";
 function Input(props) {
   let input = null;
   switch (props.type) {
-    case 'select':
-        input = <Form.Group>
-        {props.label && <Form.Label>{props.label}</Form.Label>}
-       <select 
-       className='form-control form-control-sm'
-       value={props.value}
-       onChange={props.onChange}>
-           <option value="">{ props.placeholder }</option>
-           { props.options.length > 0 ? props.options.map((option, index) => <option key={index} value={option.value}>{option.name}</option>) : null }
-       </select>
-      </Form.Group>
+    case "select":
+      input = (
+        <Form.Group>
+          {props.label && <Form.Label>{props.label}</Form.Label>}
+          <select
+            className="form-control form-control-sm"
+            value={props.value}
+            onChange={props.onChange}
+          >
+            <option value="">{props.placeholder}</option>
+            {props.options.length > 0
+              ? props.options.map((option, index) => (
+                  <option key={index} value={option.value}>
+                    {option.name}
+                  </option>
+                ))
+              : null}
+          </select>
+        </Form.Group>
+      );
 
       break;
-    case 'text':
-    
-    break;
+    // case "text":
+    //   break;
     default:
       input = (
         <Form.Group>

@@ -6,7 +6,7 @@ import Input from "../../components/UI/Input";
 import Modal from "../../components/UI/Modal";
 
 import { Col, Container, Row, Table } from "react-bootstrap";
-import { addProduct } from "../../actions";
+import { addProduct, deleteProductById } from "../../actions";
 
 import "./style.css";
 import { generatePublicUrl } from "../../urlConfig";
@@ -26,7 +26,6 @@ const Products = () => {
 
   const category = useSelector((state) => state.category);
   const product = useSelector((state) => state.product);
-  console.log("product", product);
   const createCategoryList = (categories, options = []) => {
     for (let category of categories) {
       options.push({ value: category._id, name: category.name });
@@ -74,19 +73,34 @@ const Products = () => {
             <th>Name</th>
             <th>Price</th>
             <th>Quantity</th>
+            <th>Category</th>
+            <th>Actions</th>
           </tr>
         </thead>
         <tbody>
           {product.products.length > 0 ? (
             product.products.map((product) => (
-              <tr
-                key={product._id}
-                onClick={() => showProductDetailModal(product)}
-              >
+              <tr key={product._id}>
                 <td>1</td>
                 <td>{product.name}</td>
                 <td>{product.price}</td>
                 <td>{product.quantity}</td>
+                <td>{product.category.name}</td>
+                <td>
+                  <button onClick={() => showProductDetailModal(product)}>
+                    info
+                  </button>
+                  <button
+                    onClick={() => {
+                      const payload = {
+                        productId: product._id,
+                      };
+                      dispatch(deleteProductById(payload));
+                    }}
+                  >
+                    del
+                  </button>
+                </td>
               </tr>
             ))
           ) : (
